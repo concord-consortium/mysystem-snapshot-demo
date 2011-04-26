@@ -5,7 +5,13 @@ function getMySystemJSON() {
 }
 
 function setMySystemJSON(jsonString) {
+  var MySystem = window.frames["mysystem"].MySystem;
+  
+  // put the json string into the DOM element MySystem can read.
   $("#mysystem").contents().find("#my_system_state").text(jsonString);
+
+  // call back to MySystem so it updates its state
+  if (MySystem && MySystem.updateFromDOM) MySystem.updateFromDOM();
 }
 
 $(function () {
@@ -23,8 +29,7 @@ $(function () {
   });
   
   $("#snapshot-select").change( function () {
-    var index = parseInt(jQuery(this).val(), 10);
-    console.log("setting mysystem state to %d", index);
+    var index = parseInt($(this).val(), 10);
     setMySystemJSON(snapshots[index]);
   });
   
